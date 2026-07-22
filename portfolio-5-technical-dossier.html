@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이태규 — Backend Developer · Technical Dossier</title>
+<meta name="description" content="백엔드 개발자 이태규의 포트폴리오. Java·Spring 기반 백엔드를 중심으로 웹·데이터·데스크톱·인프라·AI까지.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --teal:#12A594;
+    --teal-600:#0F9E8E;
+    --teal-700:#0B7A6E;
+    --teal-tint:rgba(18,165,148,.10);
+    --teal-tint-2:rgba(18,165,148,.055);
+    --ink:#1B2430;
+    --ink-2:#37424F;
+    --muted:#5B6874;
+    --muted-2:#8A97A2;
+    --bg:#FAFBFB;
+    --bg-alt:#F1F4F5;
+    --surface:#FFFFFF;
+    --line:#E1E7E9;
+    --line-2:#EAEEEF;
+    --line-strong:#C9D2D5;
+    --font-sans:'Inter','Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+    --maxw:1140px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    font-feature-settings:"cv05","ss01";
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-0.02em;line-height:1.14;color:var(--ink);}
+  p{margin:0;}
+
+  /* ---------- layout primitives ---------- */
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+  .section{padding:96px 0;border-top:1px solid var(--line);}
+  .section--alt{background:var(--bg-alt);}
+  .section--teal{background:linear-gradient(180deg,var(--teal-tint-2),transparent 60%),var(--bg);}
+  [id]{scroll-margin-top:84px;}
+
+  .mono{font-family:var(--font-mono);}
+
+  /* ---------- section header : mono index + kicker ---------- */
+  .sec-head{margin-bottom:44px;}
+  .sec-tag{
+    display:flex;align-items:center;gap:12px;
+    font-family:var(--font-mono);font-size:12px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--teal-700);
+    margin-bottom:18px;
+  }
+  .sec-tag .idx{color:var(--muted-2);}
+  .sec-tag .rule{flex:1;height:1px;background:var(--line-strong);}
+  .sec-title{font-size:clamp(26px,3.6vw,40px);letter-spacing:-0.03em;}
+  .sec-lead{margin-top:16px;max-width:60ch;color:var(--ink-2);font-size:17px;line-height:1.72;}
+
+  /* ---------- chips / tags ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .chip{
+    font-family:var(--font-mono);font-size:11.5px;font-weight:500;letter-spacing:.02em;
+    color:var(--ink-2);background:var(--surface);
+    border:1px solid var(--line-strong);border-radius:3px;
+    padding:5px 9px;line-height:1;white-space:nowrap;
+    transition:border-color .2s,color .2s,background .2s;
+  }
+  .chip:hover{border-color:var(--teal);color:var(--teal-700);background:var(--teal-tint-2);}
+  .chip--teal{color:var(--teal-700);border-color:rgba(18,165,148,.4);background:var(--teal-tint-2);}
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,251,251,.86);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .25s,border-color .25s;
+  }
+  .nav.scrolled{box-shadow:0 1px 0 var(--line-strong),0 8px 24px -18px rgba(27,36,48,.5);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0;}
+  .brand .mark{
+    width:30px;height:30px;flex:none;display:grid;place-items:center;
+    border:1.5px solid var(--ink);border-radius:5px;
+    font-family:var(--font-mono);font-weight:600;font-size:12px;letter-spacing:.02em;color:var(--ink);
+  }
+  .brand .who{display:flex;flex-direction:column;line-height:1.1;}
+  .brand .who b{font-size:15px;font-weight:700;letter-spacing:-0.01em;}
+  .brand .who span{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;}
+  .nav-links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;}
+  .nav-links::-webkit-scrollbar{display:none;}
+  .nav-links a{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--muted);
+    padding:6px 10px;border-radius:4px;white-space:nowrap;transition:color .2s,background .2s;
+  }
+  .nav-links a:hover{color:var(--ink);}
+  .nav-links a.active{color:var(--teal-700);background:var(--teal-tint);}
+  .nav-cta{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+    color:#fff;background:var(--ink);padding:8px 14px;border-radius:5px;white-space:nowrap;
+    transition:background .2s;flex:none;
+  }
+  .nav-cta:hover{background:var(--teal-700);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 90px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:56px;align-items:start;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal-700);margin-bottom:26px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px var(--teal-tint);}
+  .hero h1{font-size:clamp(52px,9vw,104px);line-height:.94;letter-spacing:-0.05em;font-weight:800;}
+  .hero .headline{
+    margin-top:26px;font-size:clamp(22px,3vw,32px);font-weight:600;letter-spacing:-0.02em;
+    line-height:1.32;color:var(--ink);max-width:20ch;
+  }
+  .hero .headline b{color:var(--teal-700);font-weight:600;box-shadow:inset 0 -0.42em 0 var(--teal-tint);}
+  .hero .intro{margin-top:26px;max-width:52ch;color:var(--ink-2);font-size:16.5px;line-height:1.8;}
+  .hero .domains{margin-top:30px;}
+
+  .spec-card{
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;
+    overflow:hidden;box-shadow:0 1px 0 var(--line),0 24px 48px -40px rgba(27,36,48,.55);
+  }
+  .spec-card .sc-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 18px;border-bottom:1px solid var(--line);background:var(--bg-alt);
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  }
+  .spec-card .sc-head .status{display:inline-flex;align-items:center;gap:7px;color:var(--teal-700);}
+  .spec-card .sc-head .status i{width:7px;height:7px;border-radius:50%;background:var(--teal);font-style:normal;}
+  .sc-row{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line-2);align-items:baseline;}
+  .sc-row:last-child{border-bottom:0;}
+  .sc-row .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .sc-row .v{font-size:14.5px;font-weight:500;color:var(--ink);}
+  .sc-row .v.mono{font-family:var(--font-mono);font-size:13px;font-weight:500;}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .about-block{border-top:2px solid var(--ink);padding-top:22px;}
+  .about-block .ab-no{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;color:var(--teal-700);margin-bottom:12px;display:block;}
+  .about-block p{font-size:17px;line-height:1.78;color:var(--ink-2);}
+
+  /* ---------- experience ---------- */
+  .exp{
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;
+    box-shadow:0 1px 0 var(--line);overflow:hidden;
+  }
+  .exp-head{
+    display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px;
+    padding:24px 28px;border-bottom:1px solid var(--line);background:var(--bg-alt);
+  }
+  .exp-head .co{font-size:24px;font-weight:700;letter-spacing:-0.02em;}
+  .exp-head .co small{font-family:var(--font-mono);font-weight:500;font-size:13px;color:var(--muted);letter-spacing:.02em;margin-left:12px;}
+  .exp-head .period{font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;color:var(--teal-700);}
+  .exp-body{display:grid;grid-template-columns:200px 1fr;}
+  .exp-side{padding:26px 28px;border-right:1px solid var(--line);}
+  .exp-side .lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px;}
+  .exp-side .role-flow{display:flex;flex-direction:column;gap:8px;}
+  .exp-side .role-flow span{font-family:var(--font-mono);font-size:13px;color:var(--ink-2);display:flex;align-items:center;gap:8px;}
+  .exp-side .role-flow span::before{content:"→";color:var(--teal);font-weight:600;}
+  .exp-side .role-flow span:first-child::before{content:"•";color:var(--muted-2);}
+  .exp-main{padding:26px 28px;}
+  .exp-main p{color:var(--ink-2);font-size:16px;line-height:1.8;}
+  .exp-main p + p{margin-top:14px;}
+
+  /* ---------- role expansion / tracks ---------- */
+  .tracks{margin-top:8px;}
+  .axis{position:relative;height:24px;margin-bottom:14px;border-bottom:1px solid var(--line-strong);}
+  .axis .tick{position:absolute;bottom:8px;transform:translateX(-50%);font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--muted);}
+  .axis .tick::after{content:"";position:absolute;left:50%;bottom:-9px;width:1px;height:8px;background:var(--line-strong);}
+  .axis .tick:first-child{transform:none;}
+  .axis .tick:first-child::after{left:0;}
+  .axis .tick:last-child{transform:translateX(-100%);}
+  .axis .tick:last-child::after{left:100%;}
+  .axis .tick:last-child{color:var(--teal-700);}
+
+  .track{padding:22px 0;border-top:1px solid var(--line);}
+  .track:first-of-type{border-top:0;}
+  .track-meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;margin-bottom:14px;}
+  .track-meta .badge{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:#fff;background:var(--teal);padding:4px 9px;border-radius:3px;}
+  .track-meta .badge.b2{background:var(--teal-600);}
+  .track-meta .badge.b3{background:var(--teal-700);}
+  .track-meta .t-role{font-size:19px;font-weight:700;letter-spacing:-0.02em;}
+  .track-meta .t-span{font-family:var(--font-mono);font-size:12px;color:var(--muted);letter-spacing:.04em;}
+  .rail{position:relative;height:12px;background:var(--bg-alt);border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px;}
+  .seg{position:absolute;top:-1px;bottom:-1px;left:var(--left);width:var(--w);border-radius:3px;transform:scaleX(0);transform-origin:left center;transition:transform 1s cubic-bezier(.2,.7,.2,1);}
+  .seg.in{transform:scaleX(1);}
+  .seg.s1{background:repeating-linear-gradient(135deg,var(--teal) 0 8px,var(--teal-600) 8px 16px);}
+  .seg.s2{background:var(--teal-600);}
+  .seg.s3{background:var(--teal-700);}
+  .track-items{display:grid;grid-template-columns:repeat(2,1fr);gap:6px 28px;}
+  .track-items li{position:relative;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.5;}
+  .track-items li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:1px;background:var(--teal);}
+
+  /* ---------- at a glance ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-strong);border:1px solid var(--line-strong);border-radius:6px;overflow:hidden;}
+  .stat{background:var(--surface);padding:26px 24px 24px;position:relative;transition:background .25s;}
+  .stat:hover{background:var(--teal-tint-2);}
+  .stat .sid{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted-2);}
+  .stat .val{margin-top:14px;font-size:34px;font-weight:800;letter-spacing:-0.04em;line-height:1.05;color:var(--ink);}
+  .stat .val .u{font-size:17px;font-weight:600;color:var(--teal-700);margin-left:4px;letter-spacing:-0.01em;}
+  .stat .val.text{font-size:25px;}
+  .stat .desc{margin-top:12px;font-size:14px;color:var(--muted);line-height:1.6;}
+  .stat::after{content:"";position:absolute;left:24px;right:24px;top:56px;height:1px;background:var(--line);opacity:0;}
+
+  /* ---------- records (projects) ---------- */
+  .records{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:18px;}
+  .rec{
+    display:flex;flex-direction:column;
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;
+    box-shadow:0 1px 0 var(--line);overflow:hidden;
+    transition:box-shadow .25s,transform .25s,border-color .25s;
+  }
+  .rec:hover{transform:translateY(-3px);box-shadow:0 1px 0 var(--line),0 22px 40px -30px rgba(27,36,48,.5);border-color:var(--teal);}
+  .rec-top{height:3px;background:var(--line);transition:background .25s;}
+  .rec:hover .rec-top{background:var(--teal);}
+  .rec-head{padding:20px 22px 16px;}
+  .rec-head .row1{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;}
+  .rec-no{font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--teal-700);}
+  .rec-cat{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;color:var(--muted);text-align:right;}
+  .rec-title{font-size:21px;font-weight:700;letter-spacing:-0.02em;}
+  .rec-body{padding:0 22px 22px;display:flex;flex-direction:column;flex:1;}
+  .kv{display:grid;grid-template-columns:74px 1fr;gap:12px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline;}
+  .kv .k{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding-top:2px;}
+  .kv .v{font-size:14.5px;font-weight:500;color:var(--ink);}
+  .kv--work{align-items:start;}
+  .worklist{display:flex;flex-direction:column;gap:7px;}
+  .worklist li{position:relative;padding-left:16px;font-size:14px;color:var(--ink-2);line-height:1.55;}
+  .worklist li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;background:var(--teal);}
+
+  /* ---------- internal products ---------- */
+  .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+  .product{background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;padding:24px 22px;box-shadow:0 1px 0 var(--line);transition:border-color .25s,transform .25s;}
+  .product:hover{border-color:var(--teal);transform:translateY(-3px);}
+  .product .p-no{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;color:var(--muted-2);}
+  .product .p-name{margin-top:12px;font-size:20px;font-weight:700;letter-spacing:-0.02em;}
+  .product .p-sub{margin-top:5px;font-family:var(--font-mono);font-size:12px;letter-spacing:.02em;color:var(--teal-700);}
+  .product .worklist{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);}
+
+  /* ---------- core strengths matrix ---------- */
+  .matrix{border-top:1px solid var(--line-strong);}
+  .band{display:grid;grid-template-columns:minmax(230px,320px) 1fr;gap:36px;padding:30px 0;border-bottom:1px solid var(--line);}
+  .band-l .b-idx{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted-2);}
+  .band-l .b-name{margin-top:8px;font-size:22px;font-weight:700;letter-spacing:-0.02em;}
+  .band-l .chips{margin-top:16px;}
+  .band-r{display:grid;grid-template-columns:repeat(2,1fr);gap:8px 30px;align-content:start;}
+  .band-r li{position:relative;padding-left:18px;font-size:14.5px;color:var(--ink-2);line-height:1.55;}
+  .band-r li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:1px;background:var(--teal);}
+
+  /* ---------- ai engineering ---------- */
+  .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;}
+  .ai-lead{font-size:19px;line-height:1.7;color:var(--ink-2);font-weight:500;}
+  .ai-quote{
+    margin-top:28px;padding:24px 26px;border-left:3px solid var(--teal);
+    background:var(--surface);border-radius:0 6px 6px 0;box-shadow:0 1px 0 var(--line);
+  }
+  .ai-quote p{font-size:22px;font-weight:700;letter-spacing:-0.02em;line-height:1.4;color:var(--ink);}
+  .ai-quote .mark{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--teal-700);text-transform:uppercase;display:block;margin-bottom:12px;}
+  .ai-caps .caps-lbl{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:block;}
+  .ai-caps ul{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .ai-caps li{background:var(--bg);padding:13px 18px;font-size:14.5px;color:var(--ink-2);display:flex;align-items:center;gap:12px;transition:background .2s,color .2s;}
+  .ai-caps li:hover{background:var(--teal-tint-2);color:var(--ink);}
+  .ai-caps li .n{font-family:var(--font-mono);font-size:11px;color:var(--teal-700);flex:none;}
+
+  /* ---------- tech stack index ---------- */
+  .stack-index{border-top:1px solid var(--line-strong);}
+  .stack-row{display:grid;grid-template-columns:150px 1fr;gap:28px;padding:18px 0;border-bottom:1px solid var(--line);align-items:center;}
+  .stack-row .cat{font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--ink);text-transform:uppercase;}
+  .stack-row .cat small{display:block;font-family:var(--font-mono);font-weight:400;font-size:10.5px;letter-spacing:.1em;color:var(--muted-2);margin-top:4px;}
+
+  /* ---------- closing / contact ---------- */
+  .closing{padding:110px 0 96px;}
+  .closing .kick{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-700);margin-bottom:26px;}
+  .closing .lines{max-width:60ch;}
+  .closing .lines p{font-size:19px;line-height:1.8;color:var(--ink-2);}
+  .closing .lines p + p{margin-top:14px;}
+  .finale{margin-top:52px;font-size:clamp(30px,5.4vw,58px);font-weight:800;letter-spacing:-0.045em;line-height:1.08;}
+  .finale b{color:var(--teal-700);font-weight:800;}
+  .contact{
+    margin-top:52px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px;
+  }
+  .contact a{
+    display:flex;align-items:center;gap:16px;padding:20px 22px;
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:6px;
+    box-shadow:0 1px 0 var(--line);transition:border-color .2s,transform .2s,background .2s;
+  }
+  .contact a:hover{border-color:var(--teal);transform:translateY(-2px);background:var(--teal-tint-2);}
+  .contact a .ic{
+    width:40px;height:40px;flex:none;border-radius:6px;display:grid;place-items:center;
+    background:var(--ink);color:#fff;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:.04em;
+    transition:background .2s;
+  }
+  .contact a:hover .ic{background:var(--teal-700);}
+  .contact a .ct{display:flex;flex-direction:column;line-height:1.3;min-width:0;}
+  .contact a .ct .lbl{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+  .contact a .ct .val{font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--ink);overflow-wrap:anywhere;}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;}
+  .foot-inner{max-width:var(--maxw);margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;}
+  .foot-inner span{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.08em;color:var(--muted);}
+
+  /* ---------- reveal ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:920px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;}
+    .ai-grid{grid-template-columns:1fr;gap:32px;}
+    .band{grid-template-columns:1fr;gap:18px;}
+    .exp-body{grid-template-columns:1fr;}
+    .exp-side{border-right:0;border-bottom:1px solid var(--line);}
+  }
+  @media (max-width:760px){
+    .wrap{padding:0 22px;}
+    .section{padding:70px 0;}
+    .hero{padding:56px 0 66px;}
+    .nav-cta{display:none;}
+    .about-grid{grid-template-columns:1fr;gap:24px;}
+    .records{grid-template-columns:1fr;}
+    .track-items{grid-template-columns:1fr;}
+    .band-r{grid-template-columns:1fr;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stack-row{grid-template-columns:110px 1fr;gap:16px;}
+    .foot-inner{padding:0 22px;}
+  }
+  @media (max-width:560px){
+    .nav-inner{padding:0 16px;}
+    .brand .who span{display:none;}
+    .stats{grid-template-columns:1fr;}
+    .contact{grid-template-columns:1fr;}
+    .exp-head{padding:20px;}
+    .exp-side,.exp-main{padding:20px;}
+    .kv{grid-template-columns:64px 1fr;gap:10px;}
+    .stack-row{grid-template-columns:1fr;gap:12px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .seg{transform:none;transition:none;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="이태규 홈">
+      <span class="mark">LTK</span>
+      <span class="who"><b>이태규</b><span>Backend Developer</span></span>
+    </a>
+    <div class="nav-links" aria-label="섹션 내비게이션">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#role">Role</a>
+      <a href="#projects">Projects</a>
+      <a href="#products">Products</a>
+      <a href="#strengths">Strengths</a>
+      <a href="#ai">AI</a>
+      <a href="#stack">Stack</a>
+    </div>
+    <a class="nav-cta" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<span id="top"></span>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left reveal">
+        <span class="eyebrow"><span class="dot"></span>Backend Developer · Portfolio</span>
+        <h1>이태규</h1>
+        <p class="headline"><b>오늘의 기능보다,</b><br>내일의 운영을 만듭니다.</p>
+        <p class="intro">Java와 Spring 기반 백엔드 개발을 중심으로, 웹·데스크톱 애플리케이션·데이터·인프라·AI까지 서비스에 필요한 영역을 직접 해결합니다.</p>
+        <div class="domains chips">
+          <span class="chip chip--teal">Backend</span>
+          <span class="chip">Data</span>
+          <span class="chip">Web</span>
+          <span class="chip">Desktop</span>
+          <span class="chip">Infrastructure</span>
+          <span class="chip">AI</span>
+        </div>
+      </div>
+      <aside class="spec-card reveal" style="--d:.12s" aria-label="요약 명세">
+        <div class="sc-head">
+          <span>PROFILE / SPEC</span>
+          <span class="status"><i></i>Available</span>
+        </div>
+        <div class="sc-row"><span class="k">Role</span><span class="v">Backend Developer</span></div>
+        <div class="sc-row"><span class="k">Focus</span><span class="v mono">Java · Spring</span></div>
+        <div class="sc-row"><span class="k">Scope</span><span class="v mono">Web · Data · Desktop · Infra · AI</span></div>
+        <div class="sc-row"><span class="k">Company</span><span class="v">지오넷 <span class="mono" style="color:var(--muted);font-size:12px;">2021 –</span></span></div>
+        <div class="sc-row"><span class="k">Exp.</span><span class="v mono">5+ years</span></div>
+        <div class="sc-row"><span class="k">Basis</span><span class="v">협의 · 설계 · 개발 · 배포 · 운영</span></div>
+      </aside>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">01</span><span>About</span><span class="rule"></span></div>
+      <h2 class="sec-title">개발부터 운영까지</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-block reveal">
+        <span class="ab-no">FIELD.01 — DOMAIN</span>
+        <p>공공기관, 대학, 병원, 빅데이터, AI 서비스 등 다양한 분야의 프로젝트에 메인 개발자로 참여했습니다.</p>
+      </div>
+      <div class="about-block reveal" style="--d:.1s">
+        <span class="ab-no">FIELD.02 — RESPONSIBILITY</span>
+        <p>단순한 기능 구현을 넘어 요구사항 협의, 시스템 설계, 핵심 개발, 배포와 운영까지 담당합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section class="section section--alt" id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">02</span><span>Experience</span><span class="rule"></span></div>
+      <h2 class="sec-title">한 회사에서, 역할을 넓히며</h2>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-head">
+        <div class="co">지오넷 <small>Backend / Full-cycle</small></div>
+        <div class="period">2021.03 – PRESENT</div>
+      </div>
+      <div class="exp-body">
+        <div class="exp-side">
+          <span class="lbl">Role Path</span>
+          <div class="role-flow">
+            <span>파트원</span>
+            <span>메인 개발자</span>
+            <span>파트장</span>
+          </div>
+        </div>
+        <div class="exp-main">
+          <p>첫 직장에서 약 5년 이상 근무하며 파트원 → 메인 개발자 → 파트장으로 역할을 확장했습니다.</p>
+          <p>다수의 프로젝트에서 백엔드 핵심 개발을 담당했고, 프로젝트에 따라 프론트엔드, 데스크톱 프로그램, 인프라까지 직접 수행했습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROLE EXPANSION ============ -->
+<section class="section" id="role">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">03</span><span>Role Expansion</span><span class="rule"></span></div>
+      <h2 class="sec-title">역할은 바뀐 것이 아니라,<br>계속 추가되었습니다.</h2>
+      <p class="sec-lead">세 역할이 사라지지 않고 서로 겹쳐 누적됩니다. 아래 트랙은 각 역할이 시작된 시점부터 현재까지 이어지는 구간을 나타냅니다.</p>
+    </div>
+
+    <div class="tracks reveal">
+      <div class="axis" aria-hidden="true">
+        <span class="tick" style="left:0%">2021</span>
+        <span class="tick" style="left:40%">2023</span>
+        <span class="tick" style="left:80%">2025</span>
+        <span class="tick" style="left:100%">현재</span>
+      </div>
+
+      <div class="track">
+        <div class="track-meta">
+          <span class="badge">TRACK 01</span>
+          <span class="t-role">메인 개발자</span>
+          <span class="t-span">2021 – 현재</span>
+        </div>
+        <div class="rail"><span class="seg s1" style="--left:0%;--w:100%"></span></div>
+        <ul class="track-items">
+          <li>핵심 비즈니스 로직 개발</li>
+          <li>데이터베이스 및 API 설계</li>
+          <li>사용자·관리자 기능 개발</li>
+          <li>외부 시스템 연계</li>
+          <li>서버 구축·배포·운영 대응</li>
+        </ul>
+      </div>
+
+      <div class="track">
+        <div class="track-meta">
+          <span class="badge b2">TRACK 02</span>
+          <span class="t-role">파트 리딩 추가</span>
+          <span class="t-span">2년 차부터 · 2023 – 현재</span>
+        </div>
+        <div class="rail"><span class="seg s2" style="--left:40%;--w:60%"></span></div>
+        <ul class="track-items">
+          <li>파트원 업무 배분 및 기술 지원</li>
+          <li>외부 클라이언트 요구사항 협의</li>
+          <li>내부 일정과 개발 범위 조율</li>
+          <li>프로젝트 구조 및 개발 방향 설정</li>
+          <li>핵심 기능과 고난도 영역 직접 개발</li>
+        </ul>
+      </div>
+
+      <div class="track">
+        <div class="track-meta">
+          <span class="badge b3">TRACK 03</span>
+          <span class="t-role">서비스·개발 환경 영역 확장</span>
+          <span class="t-span">4년 차부터 · 2025 – 현재</span>
+        </div>
+        <div class="rail"><span class="seg s3" style="--left:80%;--w:20%"></span></div>
+        <ul class="track-items">
+          <li>사내 협업 서비스 개발</li>
+          <li>AI 기반 개발 도구 개발</li>
+          <li>사내용 AI 플러그인 및 하네스 구축</li>
+          <li>eGovFrame 호환성 인증</li>
+          <li>실시간 데이터 및 AI 서비스 개발</li>
+          <li>TFT 및 신규 서비스 기술 검토</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AT A GLANCE ============ -->
+<section class="section section--alt" id="glance">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">04</span><span>At a Glance</span><span class="rule"></span></div>
+      <h2 class="sec-title">숫자로 보는 요약</h2>
+    </div>
+    <div class="stats reveal">
+      <div class="stat">
+        <span class="sid">STAT.01</span>
+        <div class="val">5+ <span class="u">Years</span></div>
+        <div class="desc">한 회사에서 쌓은 구축·운영 경험</div>
+      </div>
+      <div class="stat">
+        <span class="sid">STAT.02</span>
+        <div class="val text">Main Developer</div>
+        <div class="desc">다수의 프로젝트에서 핵심 개발 담당</div>
+      </div>
+      <div class="stat">
+        <span class="sid">STAT.03</span>
+        <div class="val text">Full Cycle</div>
+        <div class="desc">협의부터 설계·개발·배포·운영까지</div>
+      </div>
+      <div class="stat">
+        <span class="sid">STAT.04</span>
+        <div class="val">100M+ <span class="u">Data</span></div>
+        <div class="desc">수천만~수억 건 규모 데이터 활용 경험</div>
+      </div>
+      <div class="stat">
+        <span class="sid">STAT.05</span>
+        <div class="val text">Part Leader</div>
+        <div class="desc">팀원 리딩과 고객·일정 조율 경험</div>
+      </div>
+      <div class="stat">
+        <span class="sid">STAT.06</span>
+        <div class="val text">AI Early Adopter</div>
+        <div class="desc">GPT-3.5 초기부터 개발 업무에 적극 활용</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SELECTED PROJECTS ============ -->
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">05</span><span>Selected Projects</span><span class="rule"></span></div>
+      <h2 class="sec-title">참여 프로젝트</h2>
+      <p class="sec-lead">모두 메인 개발자로 참여했으며, 구축부터 운영까지 담당한 대표 프로젝트입니다.</p>
+    </div>
+    <div class="records">
+
+      <article class="rec reveal">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-01</span><span class="rec-cat">지자체 웹서비스</span></div>
+          <h3 class="rec-title">대전 서구청</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">eGovFrame</span><span class="chip">MyBatis</span><span class="chip">RDBMS</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>사용자 및 관리자 기능 개발</li>
+            <li>핵심 업무 로직 구현</li>
+            <li>공공기관 운영 환경 대응</li>
+            <li>배포 및 유지보수</li>
+            <li>레거시 환경 분석과 개선</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal" style="--d:.06s">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-02</span><span class="rec-cat">대학 웹서비스</span></div>
+          <h3 class="rec-title">DGIST</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">MyBatis</span><span class="chip">JavaScript</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>사용자·관리자 시스템 개발</li>
+            <li>학내 업무 및 데이터 연계</li>
+            <li>주요 기능과 공통 모듈 개발</li>
+            <li>구축부터 운영까지 담당</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-03</span><span class="rec-cat">병원 웹서비스</span></div>
+          <h3 class="rec-title">충북대학교병원</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">Oracle</span><span class="chip">Linux</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>병원 웹서비스 핵심 기능 개발</li>
+            <li>사용자 및 관리자 기능 구현</li>
+            <li>기존 시스템과 데이터 연계</li>
+            <li>보안과 안정성을 고려한 개발</li>
+            <li>운영 서버 및 배포 환경 대응</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal" style="--d:.06s">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-04</span><span class="rec-cat">교육 신청·결제 서비스</span></div>
+          <h3 class="rec-title">유성평생학습관</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">MyBatis</span><span class="chip">Payment API</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>교육 프로그램 신청·접수 기능</li>
+            <li>결제·취소·환불 프로세스</li>
+            <li>신청 인원과 상태 관리</li>
+            <li>관리자 운영 기능</li>
+            <li>신청·결제 데이터 정합성 관리</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-05</span><span class="rec-cat">지역 빅데이터 서비스</span></div>
+          <h3 class="rec-title">지역 빅데이터 서비스</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Region</span><span class="v mono" style="font-family:var(--font-mono);font-size:13px;">홍성 · 서산 · 곡성 · 부여</span></div>
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">RDBMS</span><span class="chip">Big Data</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>지역별 빅데이터 분석 서비스 개발</li>
+            <li>인파·카드 소비·위치 데이터 활용</li>
+            <li>수천만~수억 건 규모 데이터 가공</li>
+            <li>통계 및 집계 API 개발</li>
+            <li>시각화용 데이터 제공</li>
+            <li>대용량 조회 쿼리 성능 개선</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal" style="--d:.06s">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-06</span><span class="rec-cat">실시간 인파 분석 서비스</span></div>
+          <h3 class="rec-title">라이브매퍼</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Spring Boot</span><span class="chip">Real-time Data</span><span class="chip">Map</span><span class="chip">Infrastructure</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>실시간 인파 데이터 수집·분석</li>
+            <li>지역별 혼잡도와 인구 흐름 제공</li>
+            <li>대용량 위치 데이터 처리</li>
+            <li>지도 기반 조회 API 개발</li>
+            <li>운영 서버와 배포 환경 구성</li>
+          </ul></div>
+        </div>
+      </article>
+
+      <article class="rec reveal">
+        <div class="rec-top"></div>
+        <div class="rec-head">
+          <div class="row1"><span class="rec-no">P-07</span><span class="rec-cat">생성형 AI 기반 업무 지원</span></div>
+          <h3 class="rec-title">AI 업무지원 서비스</h3>
+        </div>
+        <div class="rec-body">
+          <div class="kv"><span class="k">Role</span><span class="v">메인 개발자</span></div>
+          <div class="kv"><span class="k">Stack</span><span class="v chips"><span class="chip">Spring Boot</span><span class="chip">LLM</span><span class="chip">RAG</span><span class="chip">AI Agent</span></span></div>
+          <div class="kv kv--work"><span class="k">Key Work</span><ul class="worklist v">
+            <li>생성형 AI 기반 업무 지원 기능 개발</li>
+            <li>내부 데이터와 AI 모델 연계</li>
+            <li>업무별 프롬프트와 컨텍스트 구성</li>
+            <li>AI 결과 검증 및 서비스 적용</li>
+            <li>운영 가능한 AI 서비스 구조 설계</li>
+          </ul></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERNAL PRODUCTS ============ -->
+<section class="section section--alt" id="products">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">06</span><span>Internal Products</span><span class="rule"></span></div>
+      <h2 class="sec-title">사내 제품</h2>
+      <p class="sec-lead">실제 사내 업무에 쓰이는 제품을 직접 설계·개발했습니다.</p>
+    </div>
+    <div class="products">
+      <div class="product reveal">
+        <span class="p-no">PRODUCT.01</span>
+        <div class="p-name">데일리</div>
+        <div class="p-sub">사내 프로젝트 협업 서비스</div>
+        <ul class="worklist">
+          <li>프로젝트 및 개발·운영 정보 통합</li>
+          <li>사용자 역할과 권한 관리</li>
+          <li>임시저장 및 변경 이력 관리</li>
+          <li>OTP 인증</li>
+          <li>실제 사내 업무 프로세스 반영</li>
+        </ul>
+      </div>
+      <div class="product reveal" style="--d:.08s">
+        <span class="p-no">PRODUCT.02</span>
+        <div class="p-name">뚝딱이</div>
+        <div class="p-sub">사내 개발 자동화 도구</div>
+        <ul class="worklist">
+          <li>템플릿 기반 코드 생성</li>
+          <li>프로젝트 초기 구조 생성</li>
+          <li>반복 개발 업무 자동화</li>
+          <li>데이터베이스 연계</li>
+          <li>개발 생산성 개선</li>
+        </ul>
+      </div>
+      <div class="product reveal" style="--d:.16s">
+        <span class="p-no">PRODUCT.03</span>
+        <div class="p-name">뚝딱이 AI</div>
+        <div class="p-sub">AI 기반 개발 지원 플랫폼</div>
+        <ul class="worklist">
+          <li>사내용 AI 플러그인 개발</li>
+          <li>개발 하네스 구축</li>
+          <li>코드 생성·분석·검증 자동화</li>
+          <li>테스트와 피드백 반복 구조 구성</li>
+          <li>다중 에이전트 기반 작업 분리</li>
+          <li>프로젝트별 규칙과 컨텍스트 관리</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CORE STRENGTHS ============ -->
+<section class="section" id="strengths">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">07</span><span>Core Strengths</span><span class="rule"></span></div>
+      <h2 class="sec-title">역량 매트릭스</h2>
+      <p class="sec-lead">영역별 기술과 담당 업무를 정리했습니다. 숙련도 수치가 아니라 실제 수행 범위로 표현합니다.</p>
+    </div>
+    <div class="matrix reveal">
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.01</span>
+          <div class="b-name">Backend</div>
+          <div class="chips">
+            <span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Spring Framework</span><span class="chip">eGovFrame</span><span class="chip">MyBatis</span><span class="chip">REST API</span><span class="chip">Spring Security</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>비즈니스 로직 및 API 설계</li>
+          <li>인증·권한 관리</li>
+          <li>공통 모듈 개발</li>
+          <li>외부 시스템 연계</li>
+          <li>레거시 시스템 분석과 개선</li>
+          <li>배치 및 대용량 데이터 처리</li>
+        </ul>
+      </div>
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.02</span>
+          <div class="b-name">Data</div>
+          <div class="chips">
+            <span class="chip">MariaDB</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Oracle</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>데이터 모델링</li>
+          <li>쿼리 튜닝</li>
+          <li>데이터 마이그레이션</li>
+          <li>통계·집계 데이터 가공</li>
+          <li>수천만~수억 건 규모 데이터 활용</li>
+          <li>인파·카드 소비·위치 데이터 처리</li>
+        </ul>
+      </div>
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.03</span>
+          <div class="b-name">Web</div>
+          <div class="chips">
+            <span class="chip">React</span><span class="chip">Vite</span><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Tailwind CSS</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>사용자·관리자 화면 개발</li>
+          <li>API 연동 및 상태 관리</li>
+          <li>백엔드와 프론트엔드 통합 개발</li>
+          <li>서비스 운영을 고려한 화면 구조 설계</li>
+        </ul>
+      </div>
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.04</span>
+          <div class="b-name">Desktop Application</div>
+          <div class="chips">
+            <span class="chip">C#</span><span class="chip">.NET</span><span class="chip">WPF</span><span class="chip">XAML</span><span class="chip">Visual Studio</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>Windows 데스크톱 프로그램 개발</li>
+          <li>기존 프로그램 기능 분석</li>
+          <li>WPF 기반 UI 고도화</li>
+          <li>다국어 리소스 구성</li>
+          <li>공통 스타일과 컴포넌트 관리</li>
+          <li>백엔드 API 및 데이터 연계</li>
+        </ul>
+      </div>
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.05</span>
+          <div class="b-name">Infrastructure</div>
+          <div class="chips">
+            <span class="chip">Linux</span><span class="chip">Nginx</span><span class="chip">Tomcat</span><span class="chip">PM2</span><span class="chip">Docker</span><span class="chip">GitLab CI/CD</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>운영 서버 구축 및 이전</li>
+          <li>애플리케이션 배포</li>
+          <li>Reverse Proxy 구성</li>
+          <li>SSL 인증서 설정</li>
+          <li>서비스 프로세스 관리</li>
+          <li>권한·방화벽·네트워크 설정</li>
+          <li>장애 로그 분석과 원인 해결</li>
+        </ul>
+      </div>
+
+      <div class="band">
+        <div class="band-l">
+          <span class="b-idx">AREA.06</span>
+          <div class="b-name">Collaboration</div>
+          <div class="chips">
+            <span class="chip">Git</span><span class="chip">GitLab</span><span class="chip">SVN</span><span class="chip">IntelliJ IDEA</span><span class="chip">VS Code</span><span class="chip">Visual Studio</span><span class="chip">Figma</span>
+          </div>
+        </div>
+        <ul class="band-r">
+          <li>외부 고객 요구사항 협의</li>
+          <li>개발 일정 및 범위 조율</li>
+          <li>파트원 업무 배분</li>
+          <li>코드 리뷰 및 기술 지원</li>
+          <li>형상관리와 배포 프로세스 운영</li>
+          <li>기획·디자인·개발 간 협업</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI ENGINEERING ============ -->
+<section class="section section--teal" id="ai">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">08</span><span>AI Engineering</span><span class="rule"></span></div>
+      <h2 class="sec-title">GPT-3.5 초기부터<br>생성형 AI를 개발에 활용했습니다.</h2>
+    </div>
+    <div class="ai-grid">
+      <div class="reveal">
+        <p class="ai-lead">초기에는 코드 작성, 오류 분석, 문서화에 활용했고, 현재는 AI가 안정적으로 작업할 수 있는 개발 환경과 프로세스를 설계합니다.</p>
+        <div class="ai-quote">
+          <span class="mark">Statement</span>
+          <p>AI를 사용하는 것을 넘어, AI가 일하는 방식을 설계합니다.</p>
+        </div>
+      </div>
+      <div class="ai-caps reveal" style="--d:.1s">
+        <span class="caps-lbl">Capabilities Index</span>
+        <ul>
+          <li><span class="n">01</span>코드 생성 및 분석</li>
+          <li><span class="n">02</span>리팩터링과 오류 추적</li>
+          <li><span class="n">03</span>테스트 작성 및 반복 검증</li>
+          <li><span class="n">04</span>레거시 프로젝트 구조 분석</li>
+          <li><span class="n">05</span>프로젝트별 규칙과 컨텍스트 구성</li>
+          <li><span class="n">06</span>사내용 AI 플러그인 개발</li>
+          <li><span class="n">07</span>개발 하네스 구축</li>
+          <li><span class="n">08</span>다중 에이전트 기반 작업 분리</li>
+          <li><span class="n">09</span>AI 결과물 품질 및 보안 검토</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TECH STACK ============ -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag"><span class="idx">09</span><span>Tech Stack</span><span class="rule"></span></div>
+      <h2 class="sec-title">기술 스택 인덱스</h2>
+    </div>
+    <div class="stack-index reveal">
+      <div class="stack-row">
+        <div class="cat">Backend<small>SERVER</small></div>
+        <div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Spring Framework</span><span class="chip">eGovFrame</span><span class="chip">MyBatis</span><span class="chip">Spring Security</span><span class="chip">REST API</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">Database<small>DATA</small></div>
+        <div class="chips"><span class="chip">MariaDB</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Oracle</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">Web<small>FRONTEND</small></div>
+        <div class="chips"><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Vite</span><span class="chip">TypeScript</span><span class="chip">Tailwind CSS</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">Desktop<small>APP</small></div>
+        <div class="chips"><span class="chip">C#</span><span class="chip">.NET</span><span class="chip">WPF</span><span class="chip">XAML</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">Infrastructure<small>OPS</small></div>
+        <div class="chips"><span class="chip">Linux</span><span class="chip">Nginx</span><span class="chip">Tomcat</span><span class="chip">PM2</span><span class="chip">Docker</span><span class="chip">GitLab CI/CD</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">Tools<small>WORKFLOW</small></div>
+        <div class="chips"><span class="chip">Git</span><span class="chip">GitLab</span><span class="chip">SVN</span><span class="chip">IntelliJ IDEA</span><span class="chip">VS Code</span><span class="chip">Visual Studio</span><span class="chip">Figma</span></div>
+      </div>
+      <div class="stack-row">
+        <div class="cat">AI<small>ENGINEERING</small></div>
+        <div class="chips"><span class="chip chip--teal">LLM</span><span class="chip chip--teal">RAG</span><span class="chip chip--teal">AI Agent</span><span class="chip chip--teal">AI Plugin</span><span class="chip chip--teal">Harness</span><span class="chip chip--teal">Automation</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING / CONTACT ============ -->
+<section class="section section--alt closing" id="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kick">10 / Closing — 백엔드를 중심으로, 서비스 전체를 봅니다.</div>
+      <div class="lines">
+        <p>기능을 구현하는 데서 끝내지 않고 데이터, 화면, 서버와 실제 운영 환경까지 함께 고려합니다.</p>
+        <p>새로운 기술을 보여주기 위한 개발보다 오래 운영할 수 있고 다음 사람이 이어갈 수 있는 서비스를 만듭니다.</p>
+      </div>
+      <p class="finale">오늘의 기능보다,<br><b>내일의 운영</b>을 만듭니다.</p>
+    </div>
+
+    <div class="contact reveal" style="--d:.1s">
+      <a href="tel:01092200574">
+        <span class="ic">TEL</span>
+        <span class="ct"><span class="lbl">Phone</span><span class="val">010-9220-0574</span></span>
+      </a>
+      <a href="mailto:gaetyu.develop@gmail.com">
+        <span class="ic">MAIL</span>
+        <span class="ct"><span class="lbl">Email</span><span class="val">gaetyu.develop@gmail.com</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <span>이태규 · Backend Developer</span>
+    <span>© 2026 · Technical Dossier</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // reveal + track fill
+  if('IntersectionObserver' in window && !prefersReduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    },{threshold:0.12, rootMargin:'0px 0px -7% 0px'});
+    document.querySelectorAll('.reveal, .seg').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal, .seg').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // nav shadow on scroll
+  var nav = document.getElementById('nav');
+  var onScroll = function(){ if(window.scrollY > 8){ nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); } };
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // scrollspy
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+  var map = {};
+  links.forEach(function(a){ var id = a.getAttribute('href').slice(1); var s = document.getElementById(id); if(s){ map[id] = a; } });
+  var sections = Object.keys(map).map(function(id){ return document.getElementById(id); });
+  if('IntersectionObserver' in window && sections.length){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          var active = map[e.target.id];
+          if(active){ active.classList.add('active'); }
+        }
+      });
+    },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+    sections.forEach(function(s){ spy.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>
