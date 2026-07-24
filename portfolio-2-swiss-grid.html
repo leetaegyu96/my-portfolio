@@ -79,7 +79,8 @@
   .sh{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:clamp(26px,4vw,46px);}
   .sh .idx{font-family:var(--mono);font-size:0.74rem;letter-spacing:0.1em;color:var(--accent);font-weight:700;}
   .sh .lbl{font-family:var(--mono);font-size:0.74rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);}
-  .sh .sub{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint);margin-left:auto;}
+  .sh .sub{font-size:0.78rem;letter-spacing:0.01em;color:var(--faint);margin-left:auto;white-space:nowrap;}
+  @media(max-width:640px){.sh .sub{margin-left:0;flex-basis:100%;white-space:normal;}}
   h2{font-size:clamp(1.5rem,3.1vw,2.4rem);line-height:1.26;letter-spacing:-0.012em;font-weight:700;max-width:22ch;text-wrap:balance;}
   .lead{font-size:clamp(1rem,1.5vw,1.16rem);line-height:1.68;color:var(--ink-2);max-width:60ch;}
 
@@ -135,7 +136,7 @@
   .in .tl-bar .fill{transform:scaleX(1);}
   .tl-bar .lb{position:absolute;left:15px;top:50%;transform:translateY(-50%);z-index:2;color:#fff;font-weight:600;font-size:0.9rem;letter-spacing:-0.005em;white-space:nowrap;}
   .tl-bar .lb small{font-family:var(--mono);font-weight:400;font-size:0.58rem;letter-spacing:0.1em;opacity:0.85;margin-left:9px;}
-  @media(max-width:640px){.tl-row{height:38px;}.tl-bar .lb{font-size:0.78rem;left:11px;}.tl-bar .lb small{display:none;}}
+  @media(max-width:640px){.tl-row{height:38px;}.tl-bar .lb{font-size:0.74rem;left:9px;}.tl-bar .lb small{display:none;}}
 
   .roles{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);}
   .role{padding:22px 20px 22px 0;border-right:1px solid var(--line-soft);}
@@ -156,14 +157,14 @@
   @media(max-width:480px){.glance{grid-template-columns:1fr;}.gc{min-height:0;}}
 
   /* ---- PROJECTS ---- */
-  .pj-note{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+  .pj-note{font-size:0.78rem;letter-spacing:0.01em;color:var(--muted);margin-bottom:8px;}
   .pj-note b{color:var(--accent);}
   .pj{display:grid;grid-template-columns:44px 1fr;gap:clamp(14px,2vw,26px);padding:clamp(22px,3vw,30px) 0;border-top:1px solid var(--line);}
   .pj:last-of-type{border-bottom:1px solid var(--line);}
   .pj .no{font-family:var(--mono);font-size:0.82rem;color:var(--accent);font-weight:700;padding-top:5px;}
   .pj .hd{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
   .pj .nm{font-size:clamp(1.2rem,2.3vw,1.8rem);font-weight:700;letter-spacing:-0.014em;line-height:1.2;}
-  .pj .cat{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);}
+  .pj .cat{font-size:0.78rem;letter-spacing:0.01em;color:var(--muted);}
   .pj .sm{margin-top:11px;font-size:clamp(0.98rem,1.4vw,1.08rem);line-height:1.62;color:var(--ink-2);max-width:64ch;}
   .pj .stk{display:flex;flex-wrap:wrap;gap:6px;margin-top:15px;}
   .chip{font-family:var(--mono);font-size:0.63rem;letter-spacing:0.03em;padding:4px 9px;border:1px solid var(--line);color:var(--ink-2);white-space:nowrap;transition:border-color .16s,color .16s;}
@@ -177,7 +178,7 @@
   .prod:last-child{padding-right:0;}
   .prod .pn{font-family:var(--mono);font-size:0.66rem;letter-spacing:0.12em;color:var(--accent);margin-bottom:12px;}
   .prod h4{font-size:1.25rem;font-weight:700;letter-spacing:-0.01em;}
-  .prod .pc{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:6px;margin-bottom:14px;}
+  .prod .pc{font-size:0.76rem;letter-spacing:0.01em;color:var(--muted);margin-top:6px;margin-bottom:14px;}
   .prod p{font-size:0.92rem;line-height:1.6;color:var(--ink-2);}
   @media(max-width:820px){.prods{grid-template-columns:1fr;}.prod{border-left:none;border-top:1px solid var(--line-soft);padding:22px 0 !important;}.prod:first-child{border-top:none;}}
 
@@ -185,7 +186,7 @@
   .cap{display:grid;grid-template-columns:186px 1fr;gap:clamp(16px,2.4vw,32px);padding:22px 0;border-top:1px solid var(--line);align-items:start;}
   .cap:last-of-type{border-bottom:1px solid var(--line);}
   .cap .ct{font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;}
-  .cap .ct small{display:block;font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-top:5px;}
+  .cap .ct small{display:block;font-size:0.72rem;letter-spacing:0.02em;font-weight:500;color:var(--accent);margin-top:5px;}
   .cap .cl{font-size:0.95rem;line-height:1.58;color:var(--ink-2);margin-bottom:13px;}
   .cap .cchips{display:flex;flex-wrap:wrap;gap:6px;}
   @media(max-width:680px){.cap{grid-template-columns:1fr;gap:12px;}}
@@ -195,7 +196,7 @@
   .ai-q{font-size:clamp(1.3rem,2.6vw,2rem);line-height:1.32;letter-spacing:-0.018em;font-weight:700;margin-bottom:20px;text-wrap:balance;}
   .ai-q b{color:var(--accent);}
   .ai-hi{list-style:none;margin-top:22px;display:flex;flex-wrap:wrap;gap:7px;}
-  .ai-hi .chip{font-size:0.66rem;padding:5px 10px;}
+  .ai-hi .chip{font-family:var(--sans);font-size:0.76rem;letter-spacing:0.01em;padding:5px 10px;}
   .ai-pull{border-top:2px solid var(--accent);padding-top:20px;}
   .ai-pull .k{font-family:var(--mono);font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
   .ai-pull p{font-size:clamp(1.25rem,2.2vw,1.75rem);line-height:1.3;letter-spacing:-0.015em;font-weight:700;}
@@ -252,7 +253,7 @@
     <section class="hero" id="top">
       <span class="kicker reveal">Backend Developer &nbsp;·&nbsp; <b>2021 → Present</b></span>
       <h1 class="reveal">오늘의 기능보다,<br>내일의 <span class="ac">운영</span>을 만듭니다.</h1>
-      <p class="sub reveal">Java·Spring 백엔드를 중심으로 웹·데스크톱·데이터·인프라·AI까지, 서비스에 필요한 영역을 직접 해결합니다.</p>
+      <p class="sub reveal">Java·Spring 백엔드를 중심으로 웹·데스크톱·데이터·인프라·AI까지, 서비스에 필요한&nbsp;영역을 직접 해결합니다.</p>
 
       <div class="stat-strip reveal">
         <div class="stat"><div class="v">5+</div><div class="k">Years</div></div>
@@ -272,8 +273,8 @@
       <div class="about">
         <h2 class="reveal">기능 하나가 아니라,<br>오래 가는 서비스를 만듭니다.</h2>
         <div class="notes">
-          <div class="note reveal"><div class="k">Scope</div><p>공공기관·대학·병원·빅데이터·AI 서비스 등 다양한 분야의 프로젝트에 메인 개발자로 참여했습니다.</p></div>
-          <div class="note reveal"><div class="k">Approach</div><p>기능 구현을 넘어 요구사항 협의, 시스템 설계, 핵심 개발, 배포와 운영까지 담당합니다.</p></div>
+          <div class="note reveal"><div class="k">Scope</div><p>공공기관·대학·병원·빅데이터·AI 서비스 등 다양한 분야의 프로젝트에 메인&nbsp;개발자로 참여했습니다.</p></div>
+          <div class="note reveal"><div class="k">Approach</div><p>기능 구현을 넘어 요구사항 협의, 시스템 설계, 핵심&nbsp;개발, 배포와 운영까지 담당합니다.</p></div>
         </div>
       </div>
     </section>
@@ -458,8 +459,8 @@
       <div class="sh reveal"><span class="idx">07</span><span class="lbl">AI Engineering</span><span class="sub">AI를 개발에</span></div>
       <div class="ai">
         <div class="reveal">
-          <p class="ai-q"><b>GPT-3.5 초기부터</b> 생성형 AI를 개발에 활용해 왔습니다.</p>
-          <p class="lead">초기에는 코드 작성·오류 분석·문서화에 활용했고, 지금은 AI가 안정적으로 작업할 수 있는 개발 환경과 프로세스를 직접 설계합니다.</p>
+          <p class="ai-q"><b>GPT-3.5 초기부터</b> 생성형&nbsp;AI를 개발에 활용해 왔습니다.</p>
+          <p class="lead">초기에는 코드 작성·오류 분석·문서화에 활용했고, 지금은 AI가 안정적으로 작업할&nbsp;수 있는 개발 환경과 프로세스를 직접 설계합니다.</p>
           <ul class="ai-hi">
             <li class="chip">코드 생성·분석</li><li class="chip">리팩터링·오류 추적</li><li class="chip">테스트·반복 검증</li><li class="chip">레거시 구조 분석</li><li class="chip">규칙·컨텍스트 구성</li><li class="chip">사내 AI 플러그인</li><li class="chip">개발 하네스</li><li class="chip">다중 에이전트</li><li class="chip">품질·보안 검토</li>
           </ul>
@@ -475,7 +476,7 @@
     <section id="contact">
       <div class="sh reveal"><span class="idx">08</span><span class="lbl">Closing · Contact</span><span class="sub">서비스 전체를 봅니다</span></div>
       <div class="close-lead">
-        <p class="lead reveal">기능 구현에서 끝내지 않고 데이터·화면·서버와 실제 운영 환경까지 함께 고려합니다. 새로운 기술을 보여주기 위한 개발보다, 오래 운영되고 다음 사람이 이어갈 수 있는 서비스를 만듭니다.</p>
+        <p class="lead reveal">기능 구현에서 끝내지 않고 데이터·화면·서버와 실제 운영 환경까지 함께 고려합니다. 새로운 기술을 보여주기 위한 개발보다, 오래 운영되고 다음&nbsp;사람이 이어갈&nbsp;수 있는 서비스를 만듭니다.</p>
       </div>
       <p class="statement reveal">오늘의 기능보다,<br>내일의 <span class="ac">운영</span>을 만듭니다.</p>
       <div class="contact reveal">

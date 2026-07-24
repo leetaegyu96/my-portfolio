@@ -57,6 +57,7 @@ a{color:inherit; text-decoration:none;}
 .stage-tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
   display:flex;align-items:center;gap:12px;margin-bottom:14px;}
 .stage-tag b{color:var(--blue);font-weight:700;}
+.stage-tag .ko{font-family:var(--sans);font-size:0.76rem;letter-spacing:0.01em;text-transform:none;}
 .stage-tag::after{content:"";flex:1;height:1px;background:var(--line);}
 .stage-sub{font-family:var(--mono);font-size:.64rem;color:var(--muted);letter-spacing:.02em;}
 
@@ -113,10 +114,12 @@ a{color:inherit; text-decoration:none;}
 .svc .no{font-family:var(--mono);font-size:.72rem;color:var(--muted);padding-top:4px;}
 .svc .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
 .svc .nm{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;}
-.svc .cat{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--muted);}
+.svc .cat{font-size:.76rem;letter-spacing:.01em;color:var(--muted);}
 .svc .sm{margin-top:7px;font-size:.89rem;color:var(--ink-2);line-height:1.66;max-width:64ch;}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
 .chip{font-family:var(--mono);font-size:.6rem;color:var(--ink-2);border:1px solid var(--line-2);border-radius:3px;padding:3px 8px;background:var(--paper-2);}
+.chips.ko .chip{font-family:var(--sans);font-size:.74rem;letter-spacing:.01em;}
+.svc-note .ko{font-family:var(--sans);font-size:.8rem;letter-spacing:.01em;}
 .svc .st{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--green);white-space:nowrap;padding-top:6px;}
 .svc .st::before{content:"●";margin-right:6px;font-size:.5rem;vertical-align:1px;}
 @media (max-width:680px){ .svc{grid-template-columns:1fr;} .svc .no,.svc .st{display:none;} }
@@ -143,12 +146,12 @@ a{color:inherit; text-decoration:none;}
 .ai-q b{color:var(--blue);}
 .ai-lead{margin:14px 0 18px;font-size:.93rem;color:var(--ink-2);line-height:1.72;max-width:58ch;}
 .ai-pr{margin-top:22px;border-left:2px solid var(--blue);padding:4px 0 4px 20px;font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--ink-2);}
-.ai-pr span{color:var(--blue);}
+.ai-pr span{color:var(--blue);white-space:nowrap;}
 
 /* ---- response ---- */
 .resp{border:1px solid var(--line-2);border-radius:6px;background:var(--paper-2);overflow:hidden;margin-bottom:38px;}
 .resp-head{padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.06em;}
-.resp pre{padding:18px;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--ink-2);overflow-x:auto;}
+.resp pre{padding:18px;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:break-word;}
 .resp .s{color:var(--green);font-weight:700;}
 .resp .h{color:var(--muted);}
 .resp .v{color:var(--ink);}
@@ -214,9 +217,9 @@ footer b{color:var(--ink);}
   <section class="stage" id="req">
     <div class="node" data-stage="01 · REQUEST"></div>
     <div class="stage-body hero">
-      <div class="stage-tag"><b>Stage 01</b><span>Request · 들어온 요청</span></div>
+      <div class="stage-tag"><b>Stage 01</b><span>Request</span><span class="ko">들어온 요청</span></div>
       <h1 class="reveal">오늘의 기능보다,<br>내일의 <span class="ac">운영</span>을 만듭니다.</h1>
-      <p class="sub reveal">Java·Spring 백엔드를 중심으로 웹·데스크톱·데이터·인프라·AI까지, 서비스에 필요한 영역을 직접 해결합니다. 이 페이지는 하나의 요청이 서비스가 되기까지의 과정을 따라갑니다.</p>
+      <p class="sub reveal">Java·Spring 백엔드를 중심으로 웹·데스크톱·데이터·인프라·AI까지, 서비스에 필요한 영역을 직접 해결합니다. 이 페이지는 하나의 요청이 서비스가 되기까지의 과정을 따라갑니다.</p>
       <div class="stats reveal">
         <div class="stat"><div class="v">5+</div><div class="k">Years</div></div>
         <div class="stat"><div class="v">100M+</div><div class="k">Rows of Data</div></div>
@@ -233,7 +236,7 @@ footer b{color:var(--ink);}
   <section class="stage" id="about">
     <div class="node" data-stage="02 · ACCEPT"></div>
     <div class="stage-body about">
-      <div class="stage-tag"><b>Stage 02</b><span>Accept · 요청을 받는 방식</span></div>
+      <div class="stage-tag"><b>Stage 02</b><span>Accept</span><span class="ko">요청을 받는 방식</span></div>
       <h2 class="reveal">기능 하나가 아니라,<br>오래 가는 서비스를 만듭니다.</h2>
       <div class="notes">
         <div class="note reveal"><div class="k mono">Scope</div><p>공공기관·대학·병원·빅데이터·AI 서비스 등 다양한 분야의 프로젝트에 메인 개발자로 참여했습니다.</p></div>
@@ -246,7 +249,7 @@ footer b{color:var(--ink);}
   <section class="stage" id="career">
     <div class="node" data-stage="03 · ROUTING"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 03</b><span>Routing · 경력 로그</span></div>
+      <div class="stage-tag"><b>Stage 03</b><span>Routing</span><span class="ko">경력 로그</span></div>
       <div class="co-line reveal">
         <span class="co">지오넷<small>Geonet</small></span>
         <span class="pd">2021.03 — Present</span>
@@ -279,8 +282,8 @@ footer b{color:var(--ink);}
   <section class="stage" id="projects">
     <div class="node" data-stage="04 · PROCESSING"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 04</b><span>Processing · 운영해 온 서비스</span></div>
-      <p class="svc-note mono reveal">7 services · 전 프로젝트 <b>메인 개발자</b></p>
+      <div class="stage-tag"><b>Stage 04</b><span>Processing</span><span class="ko">운영해 온 서비스</span></div>
+      <p class="svc-note mono reveal">7 services · <span class="ko">전 프로젝트 <b>메인 개발자</b></span></p>
       <div class="svcs reveal">
         <article class="svc">
           <span class="no">01</span>
@@ -353,7 +356,7 @@ footer b{color:var(--ink);}
   <section class="stage" id="products">
     <div class="node" data-stage="05 · MODULES"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 05</b><span>Modules · 직접 만든 사내 제품</span></div>
+      <div class="stage-tag"><b>Stage 05</b><span>Modules</span><span class="ko">직접 만든 사내 제품</span></div>
       <div class="prods">
         <div class="prod reveal">
           <div class="pn mono">module/01</div><h3>데일리</h3><div class="pc">사내 협업 서비스</div>
@@ -375,7 +378,7 @@ footer b{color:var(--ink);}
   <section class="stage" id="stack">
     <div class="node" data-stage="06 · RUNTIME"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 06</b><span>Runtime · 역량과 기술</span></div>
+      <div class="stage-tag"><b>Stage 06</b><span>Runtime</span><span class="ko">역량과 기술</span></div>
       <div class="caps reveal">
         <div class="cap">
           <div class="ct">Backend<small>백엔드</small></div>
@@ -415,10 +418,10 @@ footer b{color:var(--ink);}
   <section class="stage" id="ai">
     <div class="node" data-stage="07 · OPTIMIZE"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 07</b><span>Optimize · AI 엔지니어링</span></div>
-      <p class="ai-q reveal"><b>GPT-3.5 초기부터</b> 생성형 AI를 개발에 활용해 왔습니다.</p>
-      <p class="ai-lead reveal">초기에는 코드 작성·오류 분석·문서화에 활용했고, 지금은 AI가 안정적으로 작업할 수 있는 개발 환경과 프로세스를 직접 설계합니다.</p>
-      <div class="chips reveal">
+      <div class="stage-tag"><b>Stage 07</b><span>Optimize</span><span class="ko">AI 엔지니어링</span></div>
+      <p class="ai-q reveal"><b>GPT-3.5 초기부터</b> 생성형 AI를 개발에 활용해 왔습니다.</p>
+      <p class="ai-lead reveal">초기에는 코드 작성·오류 분석·문서화에 활용했고, 지금은 AI가 안정적으로 작업할 수 있는 개발 환경과 프로세스를 직접 설계합니다.</p>
+      <div class="chips ko reveal">
         <span class="chip">코드 생성·분석</span><span class="chip">리팩터링·오류 추적</span><span class="chip">테스트·반복 검증</span><span class="chip">레거시 구조 분석</span><span class="chip">규칙·컨텍스트 구성</span><span class="chip">사내 AI 플러그인</span><span class="chip">개발 하네스</span><span class="chip">다중 에이전트</span><span class="chip">품질·보안 검토</span>
       </div>
       <p class="ai-pr reveal">AI를 사용하는 것을 넘어, AI가 <span>일하는 방식</span>을 설계합니다.</p>
@@ -429,7 +432,7 @@ footer b{color:var(--ink);}
   <section class="stage" id="contact">
     <div class="node" data-stage="08 · RESPONSE"></div>
     <div class="stage-body">
-      <div class="stage-tag"><b>Stage 08</b><span>Response · 응답 완료</span></div>
+      <div class="stage-tag"><b>Stage 08</b><span>Response</span><span class="ko">응답 완료</span></div>
       <div class="resp reveal">
         <div class="resp-head">response — 200</div>
         <pre><span class="s">HTTP/1.1 200 OK</span>
