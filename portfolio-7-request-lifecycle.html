@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이태규 — Backend Developer</title>
+<meta name="description" content="하나의 요청이 서비스가 되기까지 — Java·Spring 백엔드 개발자 포트폴리오">
+<meta name="theme-color" content="#F7F4EE">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23F7F4EE'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%231F44FF'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --paper:#F7F4EE; --paper-2:#FDFBF7; --ink:#17181A; --ink-2:#43454B; --muted:#7A7C83;
+  --line:#E1DDD2; --line-2:#CEC9BC;
+  --blue:#1F44FF; --green:#0E8A45;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scrollbar-gutter:stable;}
+@media (prefers-reduced-motion: no-preference){ html{scroll-behavior:smooth;} }
+body{
+  font-family:var(--sans); background:var(--paper); color:var(--ink);
+  font-size:16px; line-height:1.6; letter-spacing:-0.011em; word-break:keep-all;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+h1,h2,h3{letter-spacing:-0.035em; text-wrap:balance;}
+p{text-wrap:pretty;}
+a{color:inherit; text-decoration:none;}
+::selection{background:#1F44FF22;}
+:focus-visible{outline:2px solid var(--blue); outline-offset:3px; border-radius:2px;}
+.skip{position:fixed;left:16px;top:-48px;z-index:100;background:var(--blue);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700;transition:top .2s;}
+.skip:focus-visible{top:16px;}
+.mono{font-family:var(--mono);}
+
+/* ---- request trace (SVG overlay) ---- */
+#trace{position:absolute;left:0;top:0;z-index:0;pointer-events:none;overflow:visible;}
+#trace .rail{fill:none;stroke:var(--line-2);stroke-width:1.5;}
+#trace .wire{fill:none;stroke:var(--blue);stroke-width:1.5;}
+#packet{filter:drop-shadow(0 1px 2px rgba(31,68,255,.35));}
+
+/* ---- top request line ---- */
+.reqline{max-width:1060px;margin:0 auto;padding:22px 24px 0;display:flex;justify-content:space-between;gap:16px;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--muted);}
+.reqline b{color:var(--ink);font-weight:500;}
+.reqline .method{color:var(--blue);font-weight:700;}
+
+/* ---- layout: rail + content ---- */
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+.stage{display:grid;grid-template-columns:64px 1fr;column-gap:28px;padding:74px 0 10px;}
+.stage-body{min-width:0;}
+.node{width:15px;height:15px;border-radius:50%;background:var(--paper);border:1.5px solid var(--line-2);
+  justify-self:center;margin-top:7px;position:relative;transition:border-color .3s, background .3s;}
+.node.on{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 4px #1F44FF1A;}
+.stage-tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.stage-tag b{color:var(--blue);font-weight:700;}
+.stage-tag::after{content:"";flex:1;height:1px;background:var(--line);}
+.stage-sub{font-family:var(--mono);font-size:.64rem;color:var(--muted);letter-spacing:.02em;}
+
+/* ---- hero ---- */
+.hero h1{font-size:clamp(2.5rem,6.6vw,4.8rem);line-height:1.12;font-weight:800;margin:10px 0 26px;}
+.hero h1 .ac{color:var(--blue);}
+.hero .sub{font-size:clamp(1rem,1.5vw,1.15rem);color:var(--ink-2);max-width:33em;line-height:1.75;}
+.stats{display:flex;margin-top:46px;border-block:1px solid var(--line-2);}
+.stat{flex:1;padding:18px 20px 18px 0;}
+.stat + .stat{padding-left:20px;border-left:1px solid var(--line);}
+.stat .v{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:700;}
+.stat .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+@media (max-width:680px){ .stats{flex-wrap:wrap;} .stat{flex:1 1 40%;} .stat:nth-child(3){border-left:0;padding-left:0;} }
+.domains{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.dm{font-family:var(--mono);font-size:.66rem;color:var(--ink-2);border:1px solid var(--line-2);border-radius:3px;padding:5px 10px;background:var(--paper-2);}
+
+/* ---- about notes ---- */
+.about h2{font-size:clamp(1.5rem,3.2vw,2.2rem);line-height:1.3;font-weight:800;margin-bottom:26px;}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.note{border:1px solid var(--line);background:var(--paper-2);border-radius:6px;padding:20px 22px;}
+.note .k{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;}
+.note p{font-size:.92rem;color:var(--ink-2);line-height:1.7;}
+@media (max-width:680px){ .notes{grid-template-columns:1fr;} }
+
+/* ---- career log ---- */
+.co-line{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px;}
+.co-line .co{font-size:1.35rem;font-weight:800;}
+.co-line .co small{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400;margin-left:10px;}
+.co-line .pd{font-family:var(--mono);font-size:.68rem;color:var(--blue);}
+.co-desc{font-size:.93rem;color:var(--ink-2);line-height:1.7;max-width:62ch;margin-bottom:30px;}
+.log{border:1px solid var(--line);border-radius:6px;background:var(--paper-2);overflow:hidden;}
+.log-head{display:flex;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.06em;}
+.log-head i{width:8px;height:8px;border-radius:50%;background:var(--line-2);}
+.ln{display:grid;grid-template-columns:132px 64px 1fr;gap:0 18px;padding:16px 18px;border-bottom:1px solid var(--line);align-items:baseline;}
+.ln:last-child{border-bottom:0;}
+.ln .ts{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;white-space:nowrap;}
+.ln .ts small{display:block;font-size:.58rem;font-weight:400;color:var(--muted);margin-top:3px;}
+.ln .lv{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--ink-2);border:1px solid var(--line-2);border-radius:3px;
+  padding:2px 6px;text-align:center;background:var(--paper);}
+.ln .lv.b{color:var(--blue);border-color:#1F44FF55;}
+.ln .msg strong{display:block;font-size:1rem;letter-spacing:-.02em;margin-bottom:4px;}
+.ln .msg p{font-size:.88rem;color:var(--muted);line-height:1.66;max-width:60ch;}
+.quote{margin:30px 0 0;font-size:clamp(1.1rem,2.2vw,1.4rem);font-weight:700;letter-spacing:-.025em;color:var(--ink-2);}
+.quote b{color:var(--blue);}
+@media (max-width:680px){ .ln{grid-template-columns:1fr;gap:6px;} .ln .lv{justify-self:start;} }
+
+/* ---- services (projects) ---- */
+.svc-note{font-family:var(--mono);font-size:.68rem;color:var(--muted);margin-bottom:20px;}
+.svc-note b{color:var(--blue);}
+.svcs{border-top:1px solid var(--line-2);}
+.svc{display:grid;grid-template-columns:44px 1fr auto;gap:0 20px;padding:24px 6px;border-bottom:1px solid var(--line);transition:background .2s;}
+.svc:hover{background:#ffffff88;}
+.svc .no{font-family:var(--mono);font-size:.72rem;color:var(--muted);padding-top:4px;}
+.svc .hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+.svc .nm{font-size:1.1rem;font-weight:800;letter-spacing:-.02em;}
+.svc .cat{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--muted);}
+.svc .sm{margin-top:7px;font-size:.89rem;color:var(--ink-2);line-height:1.66;max-width:64ch;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
+.chip{font-family:var(--mono);font-size:.6rem;color:var(--ink-2);border:1px solid var(--line-2);border-radius:3px;padding:3px 8px;background:var(--paper-2);}
+.svc .st{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--green);white-space:nowrap;padding-top:6px;}
+.svc .st::before{content:"●";margin-right:6px;font-size:.5rem;vertical-align:1px;}
+@media (max-width:680px){ .svc{grid-template-columns:1fr;} .svc .no,.svc .st{display:none;} }
+
+/* ---- capabilities ---- */
+.caps{border-top:1px solid var(--line-2);}
+.cap{display:grid;grid-template-columns:190px 1fr;gap:0 24px;padding:22px 6px;border-bottom:1px solid var(--line);}
+.cap .ct{font-size:1rem;font-weight:800;letter-spacing:-.02em;}
+.cap .ct small{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:400;margin-top:4px;}
+.cap .cl{font-size:.88rem;color:var(--ink-2);line-height:1.66;max-width:66ch;}
+@media (max-width:680px){ .cap{grid-template-columns:1fr;gap:8px;} }
+
+/* ---- products ---- */
+.prods{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.prod{border:1px solid var(--line);border-radius:6px;background:var(--paper-2);padding:22px;}
+.prod .pn{font-family:var(--mono);font-size:.62rem;color:var(--blue);margin-bottom:12px;}
+.prod h3{font-size:1.12rem;}
+.prod .pc{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:5px 0 12px;}
+.prod p{font-size:.86rem;color:var(--ink-2);line-height:1.66;}
+@media (max-width:820px){ .prods{grid-template-columns:1fr;} }
+
+/* ---- AI ---- */
+.ai-q{font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:800;letter-spacing:-.025em;line-height:1.4;}
+.ai-q b{color:var(--blue);}
+.ai-lead{margin:14px 0 18px;font-size:.93rem;color:var(--ink-2);line-height:1.72;max-width:58ch;}
+.ai-pr{margin-top:22px;border-left:2px solid var(--blue);padding:4px 0 4px 20px;font-size:1.05rem;font-weight:700;letter-spacing:-.02em;color:var(--ink-2);}
+.ai-pr span{color:var(--blue);}
+
+/* ---- response ---- */
+.resp{border:1px solid var(--line-2);border-radius:6px;background:var(--paper-2);overflow:hidden;margin-bottom:38px;}
+.resp-head{padding:10px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.06em;}
+.resp pre{padding:18px;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--ink-2);overflow-x:auto;}
+.resp .s{color:var(--green);font-weight:700;}
+.resp .h{color:var(--muted);}
+.resp .v{color:var(--ink);}
+.statement{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.18;margin-bottom:38px;}
+.statement .ac{color:var(--blue);}
+.contact{display:flex;gap:12px;flex-wrap:wrap;}
+.cc{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line-2);border-radius:6px;background:var(--paper-2);
+  padding:16px 22px;min-width:220px;transition:border-color .2s, transform .15s;}
+.cc:hover{border-color:var(--blue);transform:translateY(-2px);}
+.cc .k{font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.cc .v{font-size:.98rem;font-weight:700;font-variant-numeric:tabular-nums;}
+.cc.copy{cursor:pointer;font-family:inherit;text-align:left;color:inherit;}
+.toast{position:fixed;left:50%;bottom:64px;transform:translate(-50%,12px);z-index:80;opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--paper);font-size:.8rem;font-weight:600;padding:9px 16px;border-radius:6px;transition:opacity .25s,transform .25s;}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+footer{padding:44px 0 84px;color:var(--muted);font-size:.8rem;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+footer b{color:var(--ink);}
+
+/* ---- status bar ---- */
+.statusbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;align-items:center;gap:18px;
+  padding:8px 20px;background:color-mix(in srgb, var(--paper) 88%, transparent);border-top:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--muted);}
+.statusbar .stg{color:var(--blue);font-weight:700;min-width:200px;}
+.statusbar .bar{flex:1;max-width:180px;height:3px;background:var(--line);border-radius:2px;overflow:hidden;}
+.statusbar .bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .1s linear;}
+.statusbar .pct{font-variant-numeric:tabular-nums;min-width:34px;}
+.statusbar .up{margin-left:auto;}
+.statusbar .ok{color:var(--green);font-weight:700;opacity:0;transition:opacity .3s;}
+.statusbar .ok.show{opacity:1;}
+@media (max-width:680px){ .statusbar .up,.statusbar .stg{min-width:0;} .statusbar{gap:10px;} }
+
+/* ---- reveal ---- */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:.001s !important;animation:none !important;}
+  .reveal{opacity:1;transform:none;}
+}
+@media (max-width:900px){
+  #trace{display:none;}
+  .stage{grid-template-columns:1fr;}
+  .node{display:none;}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#req">본문 바로가기</a>
+<svg id="trace" aria-hidden="true">
+  <path class="rail" d=""></path>
+  <path class="wire" d=""></path>
+  <g id="packet"><circle r="5.5" fill="#1F44FF"></circle><circle r="2" fill="#F7F4EE"></circle></g>
+</svg>
+
+<div class="reqline mono" aria-hidden="true">
+  <span><span class="method">GET</span> /backend-developer <b>HTTP/1.1</b></span>
+  <span>Host: <b>leetaegyu96.github.io</b> · Since: <b>2021.03</b></span>
+</div>
+
+<main class="wrap">
+
+  <!-- 01 REQUEST -->
+  <section class="stage" id="req">
+    <div class="node" data-stage="01 · REQUEST"></div>
+    <div class="stage-body hero">
+      <div class="stage-tag"><b>Stage 01</b><span>Request · 들어온 요청</span></div>
+      <h1 class="reveal">오늘의 기능보다,<br>내일의 <span class="ac">운영</span>을 만듭니다.</h1>
+      <p class="sub reveal">Java·Spring 백엔드를 중심으로 웹·데스크톱·데이터·인프라·AI까지, 서비스에 필요한 영역을 직접 해결합니다. 이 페이지는 하나의 요청이 서비스가 되기까지의 과정을 따라갑니다.</p>
+      <div class="stats reveal">
+        <div class="stat"><div class="v">5+</div><div class="k">Years</div></div>
+        <div class="stat"><div class="v">100M+</div><div class="k">Rows of Data</div></div>
+        <div class="stat"><div class="v">7</div><div class="k">Projects</div></div>
+        <div class="stat"><div class="v">6</div><div class="k">Domains</div></div>
+      </div>
+      <div class="domains reveal">
+        <span class="dm">Backend</span><span class="dm">Data</span><span class="dm">Web</span><span class="dm">Desktop</span><span class="dm">Infrastructure</span><span class="dm">AI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 ACCEPT -->
+  <section class="stage" id="about">
+    <div class="node" data-stage="02 · ACCEPT"></div>
+    <div class="stage-body about">
+      <div class="stage-tag"><b>Stage 02</b><span>Accept · 요청을 받는 방식</span></div>
+      <h2 class="reveal">기능 하나가 아니라,<br>오래 가는 서비스를 만듭니다.</h2>
+      <div class="notes">
+        <div class="note reveal"><div class="k mono">Scope</div><p>공공기관·대학·병원·빅데이터·AI 서비스 등 다양한 분야의 프로젝트에 메인 개발자로 참여했습니다.</p></div>
+        <div class="note reveal"><div class="k mono">Approach</div><p>기능 구현을 넘어 요구사항 협의, 시스템 설계, 핵심 개발, 배포와 운영까지 담당합니다.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 ROUTING (career) -->
+  <section class="stage" id="career">
+    <div class="node" data-stage="03 · ROUTING"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 03</b><span>Routing · 경력 로그</span></div>
+      <div class="co-line reveal">
+        <span class="co">지오넷<small>Geonet</small></span>
+        <span class="pd">2021.03 — Present</span>
+      </div>
+      <p class="co-desc reveal">첫 직장에서 5년 이상 근무하며 파트원 → 메인 개발자 → 파트장으로 역할을 확장했습니다. 다수 프로젝트의 백엔드 핵심 개발을 맡았고, 필요에 따라 프론트엔드·데스크톱·인프라까지 직접 수행했습니다.</p>
+      <div class="log reveal">
+        <div class="log-head"><i></i><i></i><i></i>&nbsp; career.log — 시간순</div>
+        <div class="ln">
+          <span class="ts">2021.03</span><span class="lv">JOIN</span>
+          <span class="msg"><strong>지오넷 입사 — 백엔드 파트원</strong></span>
+        </div>
+        <div class="ln">
+          <span class="ts">2021 — 2023<small>2021.03 — 2023.02</small></span><span class="lv">BUILD</span>
+          <span class="msg"><strong>백엔드 기반 다지기</strong><p>핵심 비즈니스 로직, DB·API 설계, 사용자·관리자 기능, 외부 연계와 운영 환경을 익히고 직접 개발했습니다.</p></span>
+        </div>
+        <div class="ln">
+          <span class="ts">2023 — 2025<small>2023.03 — 2025.02</small></span><span class="lv b">LEAD</span>
+          <span class="msg"><strong>메인 개발과 파트 리딩</strong><p>프로젝트 핵심 개발을 맡으며 업무 배분, 기술 지원, 고객 요구사항 협의, 일정·범위 조율까지 역할을 넓혔습니다.</p></span>
+        </div>
+        <div class="ln">
+          <span class="ts">2025 — 현재<small>2025.03 — </small></span><span class="lv b">SCALE</span>
+          <span class="msg"><strong>서비스·AI·개발 환경 확장</strong><p>사내 협업 서비스와 AI 개발 도구·플러그인·하네스, 실시간·AI 서비스, TFT 기술 검토까지 담당하고 있습니다.</p></span>
+        </div>
+      </div>
+      <p class="quote reveal">역할은 바뀐 것이 아니라, <b>계속 추가되었습니다.</b></p>
+    </div>
+  </section>
+
+  <!-- 04 PROCESSING (projects) -->
+  <section class="stage" id="projects">
+    <div class="node" data-stage="04 · PROCESSING"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 04</b><span>Processing · 운영해 온 서비스</span></div>
+      <p class="svc-note mono reveal">7 services · 전 프로젝트 <b>메인 개발자</b></p>
+      <div class="svcs reveal">
+        <article class="svc">
+          <span class="no">01</span>
+          <div>
+            <div class="hd"><span class="nm">대전 서구청</span><span class="cat">지자체 웹서비스</span></div>
+            <p class="sm">사용자·관리자 기능과 핵심 업무 로직을 개발하고, 레거시 환경을 분석·개선하며 공공기관 운영 환경에서 배포·유지보수까지 담당했습니다.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">eGovFrame</span><span class="chip">MyBatis</span><span class="chip">RDBMS</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">02</span>
+          <div>
+            <div class="hd"><span class="nm">DGIST</span><span class="cat">대학 웹서비스</span></div>
+            <p class="sm">학내 업무·데이터 연계를 기반으로 사용자·관리자 시스템과 공통 모듈을 구축부터 운영까지 담당했습니다.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">MyBatis</span><span class="chip">JavaScript</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">03</span>
+          <div>
+            <div class="hd"><span class="nm">충북대학교병원</span><span class="cat">병원 웹서비스</span></div>
+            <p class="sm">보안과 안정성을 고려해 병원 웹서비스 핵심 기능을 개발하고, 기존 시스템 연계와 운영·배포 환경을 대응했습니다.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">Oracle</span><span class="chip">Linux</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">04</span>
+          <div>
+            <div class="hd"><span class="nm">유성평생학습관</span><span class="cat">교육 신청·결제 서비스</span></div>
+            <p class="sm">교육 프로그램 신청·접수부터 결제·취소·환불까지, 신청·결제 데이터 정합성과 관리자 운영 기능을 개발했습니다.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring</span><span class="chip">MyBatis</span><span class="chip">Payment API</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">05</span>
+          <div>
+            <div class="hd"><span class="nm">지역 빅데이터 서비스</span><span class="cat">홍성 · 서산 · 곡성 · 부여</span></div>
+            <p class="sm">수천만~수억 건의 인파·카드 소비·위치 데이터를 가공해 통계·집계 API를 개발하고, 대용량 조회 쿼리 성능을 개선했습니다.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">RDBMS</span><span class="chip">Big Data</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">06</span>
+          <div>
+            <div class="hd"><span class="nm">라이브매퍼</span><span class="cat">실시간 인파 분석</span></div>
+            <p class="sm">실시간 인파·위치 데이터를 수집·분석해 지역 혼잡도와 인구 흐름을 지도 기반 API로 제공하고, 운영 서버·배포 환경을 구성했습니다.</p>
+            <div class="chips"><span class="chip">Spring Boot</span><span class="chip">Real-time Data</span><span class="chip">Map</span><span class="chip">Infrastructure</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+        <article class="svc">
+          <span class="no">07</span>
+          <div>
+            <div class="hd"><span class="nm">AI 업무지원 서비스</span><span class="cat">생성형 AI 기반 업무 지원</span></div>
+            <p class="sm">내부 데이터와 LLM을 연계하고 업무별 프롬프트·컨텍스트를 구성해, 결과 검증까지 갖춘 운영 가능한 생성형 AI 서비스를 설계했습니다.</p>
+            <div class="chips"><span class="chip">Spring Boot</span><span class="chip">LLM</span><span class="chip">RAG</span><span class="chip">AI Agent</span></div>
+          </div>
+          <span class="st">OPERATING</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 MODULES (internal products) -->
+  <section class="stage" id="products">
+    <div class="node" data-stage="05 · MODULES"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 05</b><span>Modules · 직접 만든 사내 제품</span></div>
+      <div class="prods">
+        <div class="prod reveal">
+          <div class="pn mono">module/01</div><h3>데일리</h3><div class="pc">사내 협업 서비스</div>
+          <p>프로젝트·개발·운영 정보를 통합하고 역할·권한, 임시저장·변경 이력, OTP 인증까지 실제 사내 프로세스를 반영했습니다.</p>
+        </div>
+        <div class="prod reveal">
+          <div class="pn mono">module/02</div><h3>뚝딱이</h3><div class="pc">개발 자동화 도구</div>
+          <p>템플릿 기반 코드 생성과 프로젝트 초기 구조 생성으로 반복 개발 업무를 자동화해 생산성을 높였습니다.</p>
+        </div>
+        <div class="prod reveal">
+          <div class="pn mono">module/03</div><h3>뚝딱이 AI</h3><div class="pc">AI 개발 지원 플랫폼</div>
+          <p>사내 AI 플러그인과 개발 하네스를 구축해 코드 생성·분석·검증을 자동화하고, 다중 에이전트로 작업을 분리·관리합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 RUNTIME (capabilities) -->
+  <section class="stage" id="stack">
+    <div class="node" data-stage="06 · RUNTIME"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 06</b><span>Runtime · 역량과 기술</span></div>
+      <div class="caps reveal">
+        <div class="cap">
+          <div class="ct">Backend<small>백엔드</small></div>
+          <div><p class="cl">비즈니스 로직·API 설계, 인증·권한 관리, 공통 모듈, 외부 시스템 연계, 레거시 분석·개선, 배치·대용량 데이터 처리.</p>
+            <div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Spring Framework</span><span class="chip">eGovFrame</span><span class="chip">MyBatis</span><span class="chip">Spring Security</span><span class="chip">REST API</span></div></div>
+        </div>
+        <div class="cap">
+          <div class="ct">Data<small>데이터</small></div>
+          <div><p class="cl">데이터 모델링과 쿼리 튜닝, 마이그레이션, 통계·집계 가공, 수천만~수억 건 규모의 인파·카드·위치 데이터 처리.</p>
+            <div class="chips"><span class="chip">MariaDB</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Oracle</span></div></div>
+        </div>
+        <div class="cap">
+          <div class="ct">Web<small>프론트엔드</small></div>
+          <div><p class="cl">사용자·관리자 화면 개발과 API 연동·상태 관리, 운영을 고려한 프론트-백엔드 통합 개발.</p>
+            <div class="chips"><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">Vite</span><span class="chip">TypeScript</span><span class="chip">Tailwind CSS</span></div></div>
+        </div>
+        <div class="cap">
+          <div class="ct">Desktop<small>데스크톱</small></div>
+          <div><p class="cl">Windows 데스크톱 프로그램 개발과 WPF 기반 UI 고도화, 다국어 리소스·공통 컴포넌트 관리.</p>
+            <div class="chips"><span class="chip">C#</span><span class="chip">.NET</span><span class="chip">WPF</span><span class="chip">XAML</span><span class="chip">Visual Studio</span></div></div>
+        </div>
+        <div class="cap">
+          <div class="ct">Infrastructure<small>인프라</small></div>
+          <div><p class="cl">운영 서버 구축·이전과 배포, Reverse Proxy·SSL 구성, 프로세스·권한·방화벽 관리, 장애 로그 분석과 원인 해결.</p>
+            <div class="chips"><span class="chip">Linux</span><span class="chip">Nginx</span><span class="chip">Tomcat</span><span class="chip">PM2</span><span class="chip">Docker</span><span class="chip">GitLab CI/CD</span></div></div>
+        </div>
+        <div class="cap">
+          <div class="ct">Tools &amp; Collab<small>협업</small></div>
+          <div><p class="cl">고객 요구사항 협의와 일정·범위 조율, 파트원 업무 배분, 코드 리뷰·기술 지원, 형상관리와 배포 프로세스 운영.</p>
+            <div class="chips"><span class="chip">Git</span><span class="chip">GitLab</span><span class="chip">SVN</span><span class="chip">IntelliJ IDEA</span><span class="chip">VS Code</span><span class="chip">Figma</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 OPTIMIZE (AI) -->
+  <section class="stage" id="ai">
+    <div class="node" data-stage="07 · OPTIMIZE"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 07</b><span>Optimize · AI 엔지니어링</span></div>
+      <p class="ai-q reveal"><b>GPT-3.5 초기부터</b> 생성형 AI를 개발에 활용해 왔습니다.</p>
+      <p class="ai-lead reveal">초기에는 코드 작성·오류 분석·문서화에 활용했고, 지금은 AI가 안정적으로 작업할 수 있는 개발 환경과 프로세스를 직접 설계합니다.</p>
+      <div class="chips reveal">
+        <span class="chip">코드 생성·분석</span><span class="chip">리팩터링·오류 추적</span><span class="chip">테스트·반복 검증</span><span class="chip">레거시 구조 분석</span><span class="chip">규칙·컨텍스트 구성</span><span class="chip">사내 AI 플러그인</span><span class="chip">개발 하네스</span><span class="chip">다중 에이전트</span><span class="chip">품질·보안 검토</span>
+      </div>
+      <p class="ai-pr reveal">AI를 사용하는 것을 넘어, AI가 <span>일하는 방식</span>을 설계합니다.</p>
+    </div>
+  </section>
+
+  <!-- 08 RESPONSE -->
+  <section class="stage" id="contact">
+    <div class="node" data-stage="08 · RESPONSE"></div>
+    <div class="stage-body">
+      <div class="stage-tag"><b>Stage 08</b><span>Response · 응답 완료</span></div>
+      <div class="resp reveal">
+        <div class="resp-head">response — 200</div>
+        <pre><span class="s">HTTP/1.1 200 OK</span>
+<span class="h">Content-Type:</span> <span class="v">application/backend-developer</span>
+<span class="h">Cache-Control:</span> <span class="v">long-term-maintainable</span>
+<span class="h">X-Principle:</span> <span class="v">기능 구현에서 끝내지 않고, 데이터·화면·서버·운영까지 함께 봅니다</span>
+<span class="h">X-Phone:</span> <span class="v">010-9220-0574</span>
+<span class="h">X-Email:</span> <span class="v">gaetyu.develop@gmail.com</span></pre>
+      </div>
+      <p class="statement reveal">오늘의 기능보다,<br>내일의 <span class="ac">운영</span>을 만듭니다.</p>
+      <div class="contact reveal">
+        <a class="cc" href="tel:01092200574"><span class="k mono">Phone</span><span class="v">010-9220-0574</span></a>
+        <a class="cc" href="mailto:gaetyu.develop@gmail.com"><span class="k mono">Email</span><span class="v">gaetyu.develop@gmail.com</span></a>
+        <button class="cc copy" id="copyEmail" type="button"><span class="k mono">Copy</span><span class="v">이메일 주소 복사</span></button>
+      </div>
+      <footer>
+        <span><b>이태규</b> · Backend Developer · © 2026</span>
+        <span class="mono" style="font-size:.62rem;">connection: keep-alive</span>
+      </footer>
+    </div>
+  </section>
+</main>
+
+<div class="statusbar mono" aria-hidden="true">
+  <span class="stg" id="sbStage">STAGE 01 · REQUEST</span>
+  <span class="bar"><i id="sbBar"></i></span>
+  <span class="pct" id="sbPct">0%</span>
+  <span class="ok" id="sbOk">✓ 200 OK</span>
+  <span class="up">UPTIME 5Y+ · SINCE 2021.03</span>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite">이메일 주소를 복사했습니다</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- reveal ---- */
+  var reveals = document.querySelectorAll(".reveal");
+  if (reduce || !("IntersectionObserver" in window)) {
+    reveals.forEach(function(el){ el.classList.add("in"); });
+  } else {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+    }, { threshold: .1, rootMargin: "0px 0px -6% 0px" });
+    reveals.forEach(function(el){ io.observe(el); });
+  }
+
+  /* ---- request trace: path through stage nodes, packet follows scroll ---- */
+  var svg = document.getElementById("trace");
+  var rail = svg.querySelector(".rail");
+  var wire = svg.querySelector(".wire");
+  var packet = document.getElementById("packet");
+  var nodes = [].slice.call(document.querySelectorAll(".node"));
+  var sbStage = document.getElementById("sbStage");
+  var sbBar = document.getElementById("sbBar");
+  var sbPct = document.getElementById("sbPct");
+  var sbOk = document.getElementById("sbOk");
+  var len = 0, pts = [];
+
+  function build(){
+    if (matchMedia("(max-width: 900px)").matches) return;
+    var doc = document.documentElement;
+    svg.setAttribute("width", doc.clientWidth);
+    svg.setAttribute("height", doc.scrollHeight);
+    pts = nodes.map(function(n){
+      var r = n.getBoundingClientRect();
+      return { x: r.left + scrollX + r.width/2, y: r.top + scrollY + r.height/2 };
+    });
+    var d = "M " + pts[0].x + " " + (pts[0].y - 46) + " L " + pts[0].x + " " + pts[0].y;
+    for (var i = 1; i < pts.length; i++){
+      var a = pts[i-1], b = pts[i];
+      var bend = (i % 2 ? 1 : -1) * 16, my = (a.y + b.y) / 2;
+      d += " C " + (a.x + bend) + " " + my + ", " + (b.x + bend) + " " + my + ", " + b.x + " " + b.y;
+    }
+    rail.setAttribute("d", d);
+    wire.setAttribute("d", d);
+    len = wire.getTotalLength();
+    wire.style.strokeDasharray = len;
+    tick();
+  }
+
+  function tick(){
+    var doc = document.documentElement;
+    var total = doc.scrollHeight - innerHeight;
+    var sp = total > 0 ? Math.min(Math.max(scrollY / total, 0), 1) : 0;
+    sbBar.style.width = (sp * 100) + "%";
+    sbPct.textContent = Math.round(sp * 100) + "%";
+    sbOk.classList.toggle("show", sp > .985);
+
+    if (!len) { syncStage(scrollY + innerHeight * .38); return; }
+    var anchor = scrollY + innerHeight * .38;
+    var first = pts[0].y, last = pts[pts.length-1].y;
+    var p = Math.min(Math.max((anchor - first) / (last - first), 0), 1);
+    wire.style.strokeDashoffset = len * (1 - p);
+    var pt = wire.getPointAtLength(len * p);
+    packet.setAttribute("transform", "translate(" + pt.x + "," + pt.y + ")");
+    nodes.forEach(function(n, i){ n.classList.toggle("on", pts[i].y <= anchor + 2); });
+    syncStage(anchor);
+  }
+
+  function syncStage(anchor){
+    var current = nodes[0];
+    nodes.forEach(function(n){
+      var y = n.getBoundingClientRect().top + scrollY;
+      if (y <= anchor) current = n;
+    });
+    sbStage.textContent = "STAGE " + current.dataset.stage;
+  }
+
+  var ticking = false;
+  addEventListener("scroll", function(){
+    if (!ticking) { requestAnimationFrame(function(){ tick(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+
+  var rt;
+  addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(build, 150); });
+  addEventListener("load", build);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(build);
+  build();
+
+  /* ---- copy email ---- */
+  var toast = document.getElementById("toast"), tt;
+  document.getElementById("copyEmail").addEventListener("click", function(){
+    navigator.clipboard.writeText("gaetyu.develop@gmail.com").then(function(){
+      toast.classList.add("show");
+      clearTimeout(tt);
+      tt = setTimeout(function(){ toast.classList.remove("show"); }, 1800);
+    });
+  });
+})();
+</script>
+</body>
+</html>
